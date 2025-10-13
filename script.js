@@ -39,9 +39,7 @@ deleteSelectedButton.addEventListener("click", () => {
       const li = checkbox.parentElement;
       const text = li.innerText;
       const match = text.match(/([\d.,]+) ₺$/);
-      if (match) {
-        total -= parseFloat(match[1].replace(",", "."));
-      }
+      total -= parseFloat(match[1].replace(",", "."));
       li.remove();
     });
     updateTotal();
