@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<title>Harcamalar</title>
+</head>
+<body>
+
+
+<h1>Satın Alınan Listesi</h1>
+
+
+<form id="product-form">
+
+<p> Eklenecek ürün bilgisini girin: </p>
+
+<div>
+	<label for="productName">Ürün Adı</label>
+    <input id="productName" name="name" type="text" placeholder="Ör: Hırka" required />
+</div>
+
+<div>
+    <label for="quantity">Adet</label>
+    <input id="quantity" name="quantity" type="number" min="1" value="1" required />
+</div>
+    
+<div>
+    <label for="unitPrice">Birim Fiyat (₺)</label>
+    <input id="unitPrice" name="price" type="number" min="0" step="0.01" placeholder="12.50" required />
+</div>
+
+<div>
+    <label for="date">Satın Alma Tarihi</label>
+    <input id="date" name="date" type="date" />
+</div>
+
+<div>
+      <button id="add-button" type="submit">Ekle</button>
+      <button id="delete-selected" type="button">Seçili Ürünleri Sil</button>
+      <button id="clear-all" type="button">Tümünü Temizle</button>
+</div>
+    
+</form>
+
+
+<section>
+
+	<h2>Ürünler</h2>
+    
+    <li id="product-list">
+      
+    </li>
+
+</section>
+
+
+<div>
+	<h3>Toplam Harcama: <span id="total">0.00</span> ₺</h3>
+</div>
+  
+
+
+<script src="script.js"></script>
+</body>
+</html>
