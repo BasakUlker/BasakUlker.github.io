@@ -37,10 +37,16 @@ deleteSelectedButton.addEventListener("click", () => {
     const selectedItems = document.querySelectorAll(".select-item:checked");
     selectedItems.forEach((checkbox) => {
       const li = checkbox.parentElement;
-      total -= parseFloat(li.dataset.subtotal); 
+      const text = li.innerText;
+      const match = text.match(/([\d.,]+) ₺$/);
+      if (match) {
+        total -= parseFloat(match[1].replace(",", "."));
+      }
+      li.remove();
     });
     updateTotal();
   });
+  
 
 clearAllButton.addEventListener("click", () => {
   productList.innerHTML = "";
