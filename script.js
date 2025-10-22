@@ -28,22 +28,24 @@ productName.addEventListener("input", () => {
     }
 });
 
-const quantityError = document.getElementById("quantityError");
-const quantity = document.getElementById("quantity");
-const quantityValue = parseFloat(quantity.value);
+
 quantity.addEventListener("input", () => {
-    if (isNaN(quantityValue) && quantityValue < 1) {
+    const quantityError = document.getElementById("quantityError");
+    const quantity = document.getElementById("quantity");
+    const quantityValue = parseFloat(quantity.value);
+    if (Number.isNaN(quantityValue) || quantityValue < 1) {
         quantityError.textContent = "En az 1 adet olmalı!";   
     } else {
         quantityError.textContent = "";
     }
 });
 
-const unitPriceError = document.getElementById("unitPriceError");
-const unitPrice = document.getElementById("unitPrice");
-const unitPriceValue = parseFloat(unitPrice.value);
+
 unitPrice.addEventListener("input", () => {
-    if (isNaN(unitPriceValue) && unitPriceValue < 0 && unitPriceValue > 1000000){
+    const unitPriceError = document.getElementById("unitPriceError");
+    const unitPrice = document.getElementById("unitPrice");
+    const unitPriceValue = parseFloat(unitPrice.value);
+    if (isNaN(unitPriceValue) || unitPriceValue < 0 || unitPriceValue > 1000000){
         unitPriceError.textContent = "Birim fiyat 0 ile 1.000.000 arasında olmalı!";
     } else {
         unitPriceError.textContent = "";
@@ -51,10 +53,11 @@ unitPrice.addEventListener("input", () => {
     }
 });
 
-const date = document.getElementById("date");
-const dateValue = date.value.toString();
-const dateError = document.getElementById("dateError");
+
 date.addEventListener("input", () => {
+    const date = document.getElementById("date");
+    const dateValue = date.value.toString();
+    const dateError = document.getElementById("dateError");
     if (!dateValue) {
         dateError.textContent = "Lütfen bir tarih seçin!";
     } else {
@@ -85,7 +88,8 @@ addButton.onclick = function(){
     
     const listError = document.getElementById("listError");
     expenses.forEach(item => {
-        if (item.Title && isNaN(item.Quantity) && isNaN(item.Amount) && item.Date) {
+        if (item.Title || isNaN(item.Quantity) || isNaN(item.Amount) || item.Date) {
+            listError.textContent = "   ";
             const div = document.createElement("div"); 
             div.classList.add("expense-item");
         
@@ -103,6 +107,7 @@ addButton.onclick = function(){
             totalElement.textContent = total.toFixed(2);   
         } else {
             listError.textContent = "Lütfen ürün bilgilerini eksiksiz girin.";
+            expenses.pop();
         }
     });
     
