@@ -134,16 +134,20 @@ deleteSelectedButton.onclick = function(){
     const checkboxes = productList.querySelectorAll("input[type='checkbox']:checked");
     console.log(checkboxes);
     const idsToDelete = Array.from(checkboxes).map(cb => cb.value.replace("chk-", ""));
-    
+    let deletedTotal = 0.0;
     idsToDelete.forEach(id => {
+        const found = idsToDelete.find(item => item.Id === "id")
+        console.log(found.value)
         const index = expenses.indexOf(id);
         const deletedQuantity = expenses.at(id).Quantity;
         const deletedAmount = expenses.at(id).Amount;
-        total -= deletedQuantity * deletedAmount;
-        totalElement.textContent = total.toFixed(2);
-        expenses.splice(index, 1);  
+        deletedTotal += deletedQuantity * deletedAmount;
+        expenses.splice(index, 1); 
+        idsToDelete.pop();
     });
-
+    
+    total = total - deletedTotal;
+    totalElement.textContent = total.toFixed(2);
     checkboxes.forEach(cb => cb.parentElement.remove());
     
 }
