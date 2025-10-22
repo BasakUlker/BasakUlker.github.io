@@ -65,10 +65,46 @@ date.addEventListener("input", () => {
     }
 });
 
+let expenses = [];
+function renderExpenses(item){
+    
+    if (item.Title || isNaN(item.Quantity) || isNaN(item.Amount) || item.Date) {
+        listError.textContent = "   ";
+        const div = document.createElement("div"); 
+        div.classList.add("expense-item");
+            
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `chk-${item.Id}`;
+            
+        const label = document.createElement("label");
+        label.htmlFor = checkbox.id;
+
+        const productTotal = (item.Quantity * item.Amount).toFixed(2);
+        const text = `${item.Title} - ${item.Quantity} adet - ${item.Amount} ₺ - total: ${productTotal} ₺ - ${item.Date}`;
+    
+        checkbox.value = item.Id;
+    
+        label.textContent = text;
+
+        div.appendChild(checkbox);
+    
+        div.appendChild(label);
+    
+        const currentDiv = document.getElementById("productList");
+    
+        document.body.insertBefore(div, currentDiv);
+    
+        productList.prepend(div);
+      
+    } else {
+            listError.textContent = "Lütfen ürün bilgilerini eksiksiz girin.";
+    }
+   
+}
+
 let total = 0.0;
 addButton.onclick = function(){
-    
-    var expenses = [];
     const productName = document.getElementById("productName");
     const quantity = document.getElementById("quantity");
     const unitPrice = document.getElementById("unitPrice");
@@ -85,40 +121,39 @@ addButton.onclick = function(){
     };
     expenses.push(expenseModel);
     console.log(expenses);
-    
-    const listError = document.getElementById("listError");
-    expenses.forEach(item => {
-        if (item.Title || isNaN(item.Quantity) || isNaN(item.Amount) || item.Date) {
-            listError.textContent = "   ";
-            const div = document.createElement("div"); 
-            div.classList.add("expense-item");
-        
-            const productTotal = (item.Quantity * item.Amount).toFixed(2);
-            const text = `${item.Title} - ${item.Quantity} adet - ${item.Amount} ₺ - total: ${productTotal} ₺ - ${item.Date}`;
+    renderExpenses(expenseModel);
 
-            const newContent = document.createTextNode(text);
-            div.appendChild(newContent);
-            const currentDiv = document.getElementById("productList");
-            document.body.insertBefore(div, currentDiv);
-
-            productList.prepend(div);
- 
-            total += item.Quantity * item.Amount;
-            totalElement.textContent = total.toFixed(2);   
-        } else {
-            listError.textContent = "Lütfen ürün bilgilerini eksiksiz girin.";
-            expenses.pop();
-        }
-    });
+    total += expenseModel.Quantity * expenseModel.Amount;
+    totalElement.textContent = total.toFixed(2);   
     
-    
+      
 }
 
-deleteSelectedButton.onclick = function(){
 
+deleteSelectedButton.onclick = function(){
+    const checkboxes = productList.querySelectorAll("input[type='checkbox']:checked");
+    console.log(checkboxes);
+    const idsToDelete = Array.from(checkboxes).map(cb => cb.value.replace("chk-", ""));
+    
+    idsToDelete.forEach(id => {
+        const index = expenses.indexOf(id);
+        const deletedQuantity = expenses.at(id).Quantity;
+        const deletedAmount = expenses.at(id).Amount;
+        total -= deletedQuantity * deletedAmount;
+        totalElement.textContent = total.toFixed(2);
+        expenses.splice(index, 1);  
+    });
+
+    checkboxes.forEach(cb => cb.parentElement.remove());
+    
 }
 
 clearAllButton.onclick = function(){
+    const checkboxes = productList.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(cb => cb.parentElement.remove());
+    expenses = [];
+    total = 0.0;
+    totalElement.textContent = total.toFixed(2);
     
 }
 
