@@ -68,7 +68,7 @@ date.addEventListener("input", () => {
 let expenses = [];
 function renderExpenses(item){
     
-    if (item.Title || isNaN(item.Quantity) || isNaN(item.Amount) || item.Date) {
+    if (item.Title && isNaN(item.Quantity) && isNaN(item.Amount) && item.Date) {
         listError.textContent = "   ";
         const div = document.createElement("div"); 
         div.classList.add("expense-item");
@@ -136,14 +136,12 @@ deleteSelectedButton.onclick = function(){
     const idsToDelete = Array.from(checkboxes).map(cb => cb.value.replace("chk-", ""));
     let deletedTotal = 0.0;
     idsToDelete.forEach(id => {
-        const found = idsToDelete.find(item => item.Id === "id")
-        console.log(found.value)
-        const index = expenses.indexOf(id);
-        const deletedQuantity = expenses.at(id).Quantity;
-        const deletedAmount = expenses.at(id).Amount;
+        const found = expenses.find(item => item.Id === id)
+        const index = expenses.findIndex(item => item.Id === id);
+        const deletedQuantity = found.Quantity;
+        const deletedAmount = found.Amount;
         deletedTotal += deletedQuantity * deletedAmount;
         expenses.splice(index, 1); 
-        idsToDelete.pop();
     });
     
     total = total - deletedTotal;
