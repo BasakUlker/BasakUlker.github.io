@@ -68,7 +68,7 @@ date.addEventListener("input", () => {
 let expenses = [];
 function renderExpenses(item){
     
-    if (item.Title && isNaN(item.Quantity) && isNaN(item.Amount) && item.Date) {
+    if (item.Title || isNaN(item.Quantity) || isNaN(item.Amount) || item.Date) {
         listError.textContent = "   ";
         const div = document.createElement("div"); 
         div.classList.add("expense-item");
